@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "io.github.techtastic.cc_hexed.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "mixins": [
+    "MixinDatagenMain"
+  ],
+  "plugin": "io.github.techtastic.cc_hexed.mixin.CCHexedMixinConfigPlugin",
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

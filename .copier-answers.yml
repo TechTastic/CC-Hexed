@@ -1,0 +1,21 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+# https://copier.readthedocs.io/en/stable/updating/#never-change-the-answers-file-manually
+_commit: v2.2.4
+_src_path: gh:FallingColors/hexdummy
+advanced: true
+capitalize_platforms: false
+classname: CCHexed
+default_branch: main
+description: 'Hexcasting x CC: Tweaked Interop'
+display_name: 'CC: Hexed'
+github_repo: CC-Hexed
+github_user: TechTastic
+homepage_url: https://techtastic.github.io/CC-Hexed
+java_package: io.github.techtastic.cc_hexed
+kotlin_package: io.github.techtastic.cc_hexed
+mappings_name: Mojmap
+minecraft_version_in_mod_version: false
+mit_license: false
+mod_version: 1.0.0
+modid: cc_hexed
+sources_url: https://github.com/TechTastic/CC-Hexed
