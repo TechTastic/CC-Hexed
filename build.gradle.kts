@@ -9,6 +9,17 @@ architectury {
     minecraft = libs.versions.minecraft.get()
 }
 
+allprojects {
+    repositories {
+        maven {
+            url = uri("https://maven.squiddev.cc")
+            content {
+                includeGroup("cc.tweaked")
+            }
+        }
+    }
+}
+
 tasks {
     register("runAllDatagen") {
         dependsOn(":fabric:runDatagen")

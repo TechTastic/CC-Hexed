@@ -81,4 +81,7 @@ dependencies {
         exclude(group = "net.fabricmc.fabric-api")
     }
     modImplementation(libs.modMenu)
+
+    modCompileOnly(libs.cc.tweaked.fabric.api)
+    modRuntimeOnly(libs.cc.tweaked.fabric)
 }

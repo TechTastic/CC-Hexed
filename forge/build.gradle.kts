@@ -86,6 +86,10 @@ dependencies {
         localRuntime(it)
         include(it)
     }
+
+    modCompileOnly(libs.cc.tweaked.core.api)
+    modCompileOnly(libs.cc.tweaked.forge.api)
+    modRuntimeOnly(libs.cc.tweaked.forge)
 }
 
 tasks {
