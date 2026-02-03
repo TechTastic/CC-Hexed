@@ -142,7 +142,7 @@ jobs:
           cp build/ciArtifacts/*${{ matrix.modloader }}*.jar run/mods
 
       - name: Run MC test client
-        if: matrix.env == 'client'
+        if: matrix.environment == 'client'
         # sometimes the headlessmc launcher just hangs for no clear reason
         # you can try re-running the failed jobs if it hits this, or increase the timeout if your mod actually takes that long to load
         timeout-minutes: 10
@@ -156,7 +156,7 @@ jobs:
           mc-runtime-test: ${{ matrix.mc-runtime-test }}
       
       - name: Run MC test server
-        if: matrix.env == 'server'
+        if: matrix.environment == 'server'
         timeout-minutes: 10  # see above
         uses: headlesshq/mc-server-test@1.0.0
         with:
@@ -172,7 +172,7 @@ jobs:
       pages: read
     outputs:
       pages-url: ${{ steps.build.outputs.pages-url }}
-      deploy: ${{ github.event_name != 'pull_request' && contains(fromJson(env.HEXDOC_BRANCHES), github.ref_name) && !inputs.dry_run }}
+      deploy: ${{ github.event_name != 'pull_request' && contains(fromJson(environment.HEXDOC_BRANCHES), github.ref_name) && !inputs.dry_run }}
     steps:
       - uses: actions/checkout@v4
 

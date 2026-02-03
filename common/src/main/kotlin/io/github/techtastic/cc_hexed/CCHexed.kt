@@ -1,5 +1,7 @@
 package io.github.techtastic.cc_hexed
 
+import dan200.computercraft.api.ComputerCraftAPI
+import dan200.computercraft.impl.ComputerCraftAPIService
 import net.minecraft.resources.ResourceLocation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
