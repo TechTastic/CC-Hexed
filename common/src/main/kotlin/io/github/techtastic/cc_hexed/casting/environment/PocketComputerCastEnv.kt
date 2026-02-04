@@ -2,10 +2,12 @@ package io.github.techtastic.cc_hexed.casting.environment
 
 import at.petrak.hexcasting.api.HexAPI
 import at.petrak.hexcasting.api.casting.eval.env.PlayerBasedCastEnv
-import at.petrak.hexcasting.common.lib.HexItems
 import dan200.computercraft.api.peripheral.IComputerAccess
 import dan200.computercraft.api.pocket.IPocketAccess
 import dan200.computercraft.shared.computer.core.ServerComputer
+import dev.architectury.platform.Platform
+import io.github.techtastic.cc_hexed.interop.CCAndroidsInterop
+import io.github.techtastic.cc_hexed.interop.PlethoraInterop
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
@@ -17,26 +19,35 @@ import net.minecraft.world.phys.Vec3
 import kotlin.math.pow
 
 class PocketComputerCastEnv(level: ServerLevel, computerAccess: IComputerAccess, val pocketAccess: IPocketAccess) : AbstractComputerCastEnv(level, computerAccess) {
-    override val mishapEnv: AbstractComputerMishapEnv
-        get() = object : AbstractComputerMishapEnv(level, this.castingEntity as? ServerPlayer) {}
+    override val mishapEnv: AbstractComputerMishapEnv<PocketComputerCastEnv>
+        get() = object : AbstractComputerMishapEnv<PocketComputerCastEnv>(level, this.castingEntity as? ServerPlayer, this) {}
 
     override val serverComputer: ServerComputer
-        get() = this.pocketAccess as ServerComputer
+        get() = run {
+            if (Platform.isModLoaded("plethora"))
+                PlethoraInterop.getServerComputer(this.pocketAccess)?.let { return it }
+            if (Platform.isModLoaded("cc-androids"))
+                CCAndroidsInterop.getServerComputer(this.pocketAccess)?.let { return it }
+            return this.pocketAccess as ServerComputer
+        }
 
     override val inventory: Container
-        get() = (this.castingEntity as? ServerPlayer)?.inventory as Container
+        get() = run {
+            if (Platform.isModLoaded("cc-androids"))
+                CCAndroidsInterop.getInventory(this.pocketAccess)?.let { return it }
+            (this.castingEntity as? ServerPlayer)?.inventory as Container
+        }
 
     override fun getCastingEntity(): LivingEntity? = this.pocketAccess.entity as? LivingEntity
 
     override fun mishapSprayPos(): Vec3 = this.pocketAccess.position
 
-    override fun getCastingHand(): InteractionHand =
-        this.getCastingEntity()?.let { caster ->
-            if (caster.getItemInHand(InteractionHand.MAIN_HAND).item == HexItems.STAFF_MINDSPLICE)
-                InteractionHand.MAIN_HAND
-            else
-                InteractionHand.OFF_HAND
-        } ?: InteractionHand.MAIN_HAND
+    override fun getCastingHand(): InteractionHand {
+        if (Platform.isModLoaded("cc-androids"))
+            CCAndroidsInterop.getCastingHand(this.pocketAccess)?.let { return it }
+
+        return InteractionHand.MAIN_HAND
+    }
 
     override fun isVecInRangeEnvironment(vec: Vec3): Boolean {
         (this.castingEntity as? ServerPlayer)?.let { player ->

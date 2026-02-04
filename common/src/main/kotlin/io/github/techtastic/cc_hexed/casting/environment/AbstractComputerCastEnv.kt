@@ -24,7 +24,7 @@ import net.minecraft.world.item.ItemStack
 import java.util.function.Predicate
 
 abstract class AbstractComputerCastEnv(val level: ServerLevel, val computerAccess: IComputerAccess) : CastingEnvironment(level) {
-    abstract val mishapEnv: AbstractComputerMishapEnv
+    abstract val mishapEnv: AbstractComputerMishapEnv<*>
     abstract val serverComputer: ServerComputer
     abstract val inventory: Container?
 

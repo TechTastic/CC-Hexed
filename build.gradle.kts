@@ -17,6 +17,14 @@ allprojects {
                 includeGroup("cc.tweaked")
             }
         }
+
+        maven {
+            name = "Modrinth"
+            url = uri("https://api.modrinth.com/maven")
+            content {
+                includeGroup("maven.modrinth")
+            }
+        }
     }
 }
 

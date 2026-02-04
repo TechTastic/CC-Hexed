@@ -22,6 +22,12 @@ dependencies {
     modCompileOnly(libs.cc.tweaked.common.api)
     modCompileOnly(libs.cc.tweaked.common)
 
+    modCompileOnly(libs.cc.androids.fabric)
+
+    modCompileOnly(libs.cc.drones.plus)
+
+    modCompileOnly(libs.plethora.peripherals)
+
     libs.mixinExtras.common.also {
         implementation(it)
         annotationProcessor(it)

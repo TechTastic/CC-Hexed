@@ -6,7 +6,9 @@ import dan200.computercraft.api.peripheral.IComputerAccess
 import dan200.computercraft.api.turtle.ITurtleAccess
 import dan200.computercraft.api.turtle.TurtleSide
 import dan200.computercraft.shared.computer.core.ServerComputer
+import dan200.computercraft.shared.turtle.core.InteractDirection
 import dan200.computercraft.shared.turtle.core.TurtleBrain
+import dan200.computercraft.shared.turtle.core.TurtleDropCommand
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
@@ -18,8 +20,23 @@ import java.util.function.Predicate
 import kotlin.math.pow
 
 class TurtleCastEnv(level: ServerLevel, computerAccess: IComputerAccess, val turtleAccess: ITurtleAccess, val turtleSide: TurtleSide) : AbstractComputerCastEnv(level, computerAccess) {
-    override val mishapEnv: AbstractComputerMishapEnv
-        get() = object : AbstractComputerMishapEnv(level, null) {}
+    override val mishapEnv: AbstractComputerMishapEnv<TurtleCastEnv>
+        get() = object : AbstractComputerMishapEnv<TurtleCastEnv>(level, null, this) {
+            override fun yeetHeldItemsTowards(targetPos: Vec3?) {
+                val slot = env.turtleAccess.selectedSlot
+                val item = env.turtleAccess.inventory.getItem(slot)
+                env.turtleAccess.inventory.setItem(slot, ItemStack.EMPTY)
+                val pos = env.turtleAccess.position.center
+                val delta = targetPos!!.subtract(pos).normalize().scale(0.5)
+                yeetItem(item,pos,delta)
+            }
+
+            override fun dropHeldItems() {
+                env.turtleAccess.executeCommand(
+                    TurtleDropCommand(InteractDirection.FORWARD, 64)
+                )
+            }
+        }
 
     override val serverComputer: ServerComputer
         get() = (this.turtleAccess as TurtleBrain).owner.serverComputer!!
