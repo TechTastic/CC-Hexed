@@ -9,8 +9,10 @@ import dan200.computercraft.api.lua.LuaFunction
 import dan200.computercraft.api.lua.MethodResult
 import dan200.computercraft.api.peripheral.IComputerAccess
 import dan200.computercraft.api.peripheral.IPeripheral
+import dan200.computercraft.shared.util.NBTUtil
 import io.github.techtastic.cc_hexed.util.ConversionUtil.toIota
 import io.github.techtastic.cc_hexed.util.ConversionUtil.toLua
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.server.level.ServerLevel
 
 abstract class AbstractWandPeripheral: IPeripheral {
@@ -26,6 +28,12 @@ abstract class AbstractWandPeripheral: IPeripheral {
 
     override fun detach(computer: IComputerAccess?) {
         init = false
+    }
+
+    @LuaFunction
+    fun test(args: IArguments) {
+        val a = args.get(0)
+        println("\nClass: ${a.javaClass}\nString: $a")
     }
 
     @LuaFunction

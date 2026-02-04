@@ -87,7 +87,7 @@ dependencies {
 
     modRuntimeOnly(libs.cc.androids.fabric)
 
-    modRuntimeOnly(libs.cc.drones.plus)
+    //modRuntimeOnly(libs.cc.drones.plus)
 
     //modRuntimeOnly(libs.plethora.peripherals)
 }
