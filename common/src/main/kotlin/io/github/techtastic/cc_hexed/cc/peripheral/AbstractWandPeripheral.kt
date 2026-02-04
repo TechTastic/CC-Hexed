@@ -31,9 +31,8 @@ abstract class AbstractWandPeripheral: IPeripheral {
     }
 
     @LuaFunction
-    fun test(args: IArguments) {
-        val a = args.get(0)
-        println("\nClass: ${a.javaClass}\nString: $a")
+    fun test(args: IArguments): Any? {
+        return args.get(0)?.toIota(world)?.toLua()
     }
 
     @LuaFunction
