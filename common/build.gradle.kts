@@ -20,6 +20,7 @@ dependencies {
     modApi(libs.clothConfig.common)
 
     modCompileOnly(libs.cc.tweaked.common.api)
+    modCompileOnly(libs.cc.tweaked.common)
 
     libs.mixinExtras.common.also {
         implementation(it)

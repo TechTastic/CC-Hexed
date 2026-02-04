@@ -4,13 +4,5 @@
   icon: "minecraft:birch_sign",
   advancement: "hexcasting:root",
   pages: [
-    {
-      type: "hexcasting:pattern",
-      op_id: "cc_hexed:congratulate/great",
-      anchor: "cc_hexed:congratulate/great",
-      input: "entity",
-      output: "",
-      text: "cc_hexed.book.patterns.great_spells.dummy_great_spells.congratulate/great",
-    },
   ],
 }

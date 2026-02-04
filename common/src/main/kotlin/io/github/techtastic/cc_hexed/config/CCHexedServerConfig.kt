@@ -14,7 +14,6 @@ import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer
 import net.minecraft.network.FriendlyByteBuf
 import net.minecraft.world.InteractionResult
 import io.github.techtastic.cc_hexed.CCHexed
-import io.github.techtastic.cc_hexed.networking.msg.MsgSyncConfigS2C
 
 object CCHexedServerConfig {
     @JvmStatic
@@ -37,9 +36,6 @@ object CCHexedServerConfig {
     }
 
     fun initServer() {
-        PlayerEvent.PLAYER_JOIN.register { player ->
-            MsgSyncConfigS2C(holder.config.server).sendToPlayer(player)
-        }
     }
 
     fun onSyncConfig(serverConfig: ServerConfig?) {

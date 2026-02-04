@@ -7,6 +7,7 @@ import at.petrak.hexcasting.common.lib.hex.HexIotaTypes
 import dan200.computercraft.api.lua.IArguments
 import dan200.computercraft.api.lua.LuaFunction
 import dan200.computercraft.api.lua.MethodResult
+import dan200.computercraft.api.peripheral.IComputerAccess
 import dan200.computercraft.api.peripheral.IPeripheral
 import io.github.techtastic.cc_hexed.util.ConversionUtil.toIota
 import io.github.techtastic.cc_hexed.util.ConversionUtil.toLua
@@ -14,9 +15,18 @@ import net.minecraft.server.level.ServerLevel
 
 abstract class AbstractWandPeripheral: IPeripheral {
     lateinit var vm: CastingVM
+    var init = false
     abstract val world: ServerLevel
 
     override fun getType(): String = "wand"
+
+    override fun attach(computer: IComputerAccess) {
+        init = true
+    }
+
+    override fun detach(computer: IComputerAccess?) {
+        init = false
+    }
 
     @LuaFunction
     fun getStack(): MethodResult {
@@ -57,7 +67,7 @@ abstract class AbstractWandPeripheral: IPeripheral {
     }
 
     @LuaFunction
-    fun enlightened(): Boolean = vm.env.isEnlightened
+    fun isEnlightened(): Boolean = vm.env.isEnlightened
 
     @LuaFunction
     fun getRavenmind(): Any? {
