@@ -84,10 +84,11 @@ dependencies {
 
     modCompileOnly(libs.cc.tweaked.fabric.api)
     modRuntimeOnly(libs.cc.tweaked.fabric)
-
     modRuntimeOnly(libs.cc.androids.fabric)
-
     //modRuntimeOnly(libs.cc.drones.plus)
-
     //modRuntimeOnly(libs.plethora.peripherals)
+
+    modRuntimeOnly(libs.moreiotas.fabric) { isTransitive = false }
+    modRuntimeOnly(libs.jblas)
+    //modRuntimeOnly(libs.complexhex)
 }

@@ -36,7 +36,7 @@ patchouli-forge = "1.20.1-84-FORGE"
 
 trinkets = "3.7.0"
 
-cardinalComponents = "5.2.1"
+cardinalComponents = "5.2.3"
 serializationHooks = "0.4.99999"
 mixinExtras = "0.5.0"
 clothConfig = "11.1.106"
@@ -50,6 +50,10 @@ cc-androids-forge = "1.3.0-fabric"
 cc-androids-fabric = "1.3.0-forge"
 plethora-peripherals = "1.20.1-1.12.0"
 cc-drones-plus = "0.2.0"
+
+moreiotas = "0.1.1"
+jblas = "1.2.5"
+complexhex = "0.1.3-beta"
 
 # other dependencies
 
@@ -124,13 +128,16 @@ cc-tweaked-forge-api  = { module="cc.tweaked:cc-tweaked-1.20.1-forge-api", versi
 cc-tweaked-forge      = { module="cc.tweaked:cc-tweaked-1.20.1-forge", version.ref="cc-tweaked" }
 cc-tweaked-fabric-api = { module="cc.tweaked:cc-tweaked-1.20.1-fabric-api", version.ref="cc-tweaked" }
 cc-tweaked-fabric     = { module="cc.tweaked:cc-tweaked-1.20.1-fabric", version.ref="cc-tweaked" }
+cc-androids-forge     = { module="maven.modrinth:cc-androids", version.ref="cc-androids-forge" }
+cc-androids-fabric    = { module="maven.modrinth:cc-androids", version.ref="cc-androids-fabric" }
+plethora-peripherals  = { module="maven.modrinth:plethora-peripherals", version.ref="plethora-peripherals" }
+cc-drones-plus        = { module="maven.modrinth:ccdrones+", version.ref="cc-drones-plus" }
 
-cc-androids-forge  = { module="maven.modrinth:cc-androids", version.ref="cc-androids-forge" }
-cc-androids-fabric = { module="maven.modrinth:cc-androids", version.ref="cc-androids-fabric" }
-
-plethora-peripherals = { module="maven.modrinth:plethora-peripherals", version.ref="plethora-peripherals" }
-
-cc-drones-plus = { module="maven.modrinth:ccdrones+", version.ref="cc-drones-plus" }
+moreiotas-common = { module="ram.talia.moreiotas:moreiotas-common-1.20.1", version.ref="moreiotas" }
+moreiotas-fabric = { module="ram.talia.moreiotas:moreiotas-fabric-1.20.1", version.ref="moreiotas" }
+moreiotas-forge  = { module="ram.talia.moreiotas:moreiotas-forge-1.20.1", version.ref="moreiotas" }
+jblas            = { module="org.jblas:jblas", version.ref="jblas" }
+complexhex       = { module="maven.modrinth:complex-hex", version.ref="complexhex" }
 
 [plugins]
 kotlin-jvm = { id="org.jetbrains.kotlin.jvm", version.ref="kotlin" }

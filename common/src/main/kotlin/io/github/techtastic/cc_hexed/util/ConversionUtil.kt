@@ -5,6 +5,8 @@ import at.petrak.hexcasting.api.utils.putList
 import at.petrak.hexcasting.common.lib.hex.HexIotaTypes
 import dan200.computercraft.api.lua.LuaException
 import dan200.computercraft.shared.util.NBTUtil
+import dev.architectury.platform.Platform
+import io.github.techtastic.cc_hexed.interop.MoreIotasInterop
 import net.minecraft.nbt.ByteTag
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.DoubleTag
@@ -22,6 +24,8 @@ import kotlin.collections.toList
 object ConversionUtil {
     @JvmStatic
     fun Iota.toLua(): Any? {
+        if (Platform.isModLoaded("moreiotas"))
+            MoreIotasInterop.toLua(this)?.let { return it }
         return when(this) {
             is NullIota -> null
             is BooleanIota -> this.bool
@@ -36,6 +40,7 @@ object ConversionUtil {
         return when (this) {
             is Number -> DoubleIota(this.toDouble())
             is Boolean -> BooleanIota(this)
+            is String -> if (Platform.isModLoaded("moreiotas")) MoreIotasInterop.toIota(this)!! else throw LuaException("MoreIotas is needed to handle string!")
             is HashMap<*,*> -> this.toIota(level)
             null -> NullIota()
             else -> GarbageIota()

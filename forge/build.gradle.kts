@@ -90,9 +90,10 @@ dependencies {
     modCompileOnly(libs.cc.tweaked.core.api)
     modCompileOnly(libs.cc.tweaked.forge.api)
     modRuntimeOnly(libs.cc.tweaked.forge)
-
     modCompileOnly(libs.cc.androids.forge)
     modRuntimeOnly(libs.cc.androids.forge)
+
+    modRuntimeOnly(libs.moreiotas.forge) { isTransitive = false }
 }
 
 tasks {
