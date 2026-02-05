@@ -101,3 +101,7 @@ tasks {
         exclude("fabric.mod.json")
     }
 }
+
+tasks.named("processResources") {
+    dependsOn(":common:copyMathLibrary")
+}

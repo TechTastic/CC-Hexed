@@ -180,3 +180,12 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# Advanced Math library stuff
+quaternion.lua
+matrix.lua
+quaternion.txt
+matrix.txt
+mmath.lua
+pid.lua
+stats.lua

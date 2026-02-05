@@ -33,3 +33,23 @@ dependencies {
         annotationProcessor(it)
     }
 }
+
+tasks.register<Exec>("updateSubmodules") {
+    commandLine("git", "submodule", "update", "--recursive", "--remote")
+}
+
+tasks.register<Copy>("copyMathLibrary") {
+    dependsOn("updateSubmodules")
+    from("../libs/advanced_math/datapack/data/computercraft/lua/rom/")
+    into("src/main/resources/data/computercraft/lua/rom/")
+    include("**/*.lua")
+    include("*/*.txt")
+}
+
+tasks.named("processResources") {
+    dependsOn("copyMathLibrary")
+}
+
+tasks.named("sourcesJar") {
+    dependsOn("copyMathLibrary")
+}

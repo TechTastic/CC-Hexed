@@ -92,3 +92,7 @@ dependencies {
     modRuntimeOnly(libs.jblas)
     //modRuntimeOnly(libs.complexhex)
 }
+
+tasks.named("processResources") {
+    dependsOn(":common:copyMathLibrary")
+}
