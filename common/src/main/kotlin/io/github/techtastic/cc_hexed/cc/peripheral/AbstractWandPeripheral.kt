@@ -10,10 +10,14 @@ import dan200.computercraft.api.lua.MethodResult
 import dan200.computercraft.api.peripheral.IComputerAccess
 import dan200.computercraft.api.peripheral.IPeripheral
 import dan200.computercraft.shared.util.NBTUtil
+import dev.kineticcat.complexhex.api.casting.iota.QuaternionIota
+import dev.kineticcat.complexhex.stuff.Quaternion
 import io.github.techtastic.cc_hexed.util.ConversionUtil.toIota
 import io.github.techtastic.cc_hexed.util.ConversionUtil.toLua
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.server.level.ServerLevel
+import org.jblas.DoubleMatrix
+import ram.talia.moreiotas.api.casting.iota.MatrixIota
 
 abstract class AbstractWandPeripheral: IPeripheral {
     lateinit var vm: CastingVM
@@ -28,11 +32,6 @@ abstract class AbstractWandPeripheral: IPeripheral {
 
     override fun detach(computer: IComputerAccess?) {
         init = false
-    }
-
-    @LuaFunction
-    fun test(args: IArguments): Any? {
-        return args.get(0)?.toIota(world)?.toLua()
     }
 
     @LuaFunction
@@ -63,14 +62,18 @@ abstract class AbstractWandPeripheral: IPeripheral {
         val stack = vm.image.stack.toMutableList()
         val iota = obj.toIota(world)
         stack.add(iota)
-        vm.image = vm.image.copy(stack) // please petrak I am crying and begging. make the stack mutable
+        vm.image = vm.image.copy(stack = stack)
     }
 
     @LuaFunction
     fun popStack(): Any? {
         vm.image = vm.image.copy(stack = vm.image.stack.toMutableList())
-        val iota = (vm.image.stack as MutableList).removeLast()
-        return iota.toLua()
+        return (vm.image.stack as MutableList).removeLast().toLua()
+    }
+
+    @LuaFunction
+    fun peekStack(): Any?{
+        return vm.image.stack.last().toLua()
     }
 
     @LuaFunction
@@ -86,12 +89,11 @@ abstract class AbstractWandPeripheral: IPeripheral {
     @LuaFunction
     fun setRavenmind(iota: Any) {
         val newLocal = iota.toIota(world)
-        if ((newLocal?.type ?: HexIotaTypes.NULL) == HexIotaTypes.NULL)
+        if (newLocal.type == HexIotaTypes.NULL)
             vm.image.userData.remove(HexAPI.RAVENMIND_USERDATA)
         else
             vm.image.userData.put(HexAPI.RAVENMIND_USERDATA, IotaType.serialize(newLocal))
     }
 
-    @LuaFunction(mainThread = true)
     abstract fun runPattern(args: IArguments)
 }

@@ -105,3 +105,7 @@ tasks {
 tasks.named("processResources") {
     dependsOn(":common:copyMathLibrary")
 }
+
+tasks.named("sourcesJar") {
+    dependsOn(":common:copyMathLibrary")
+}

@@ -23,10 +23,12 @@ import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import java.util.function.Predicate
 
-abstract class AbstractComputerCastEnv(val level: ServerLevel, val computerAccess: IComputerAccess) : CastingEnvironment(level) {
+abstract class AbstractComputerCastEnv(level: ServerLevel, val computerAccess: IComputerAccess) : CastingEnvironment(level) {
     abstract val mishapEnv: AbstractComputerMishapEnv<*>
     abstract val serverComputer: ServerComputer
     abstract val inventory: Container?
+
+    constructor(old: AbstractComputerCastEnv, newWorld: ServerLevel) : this(newWorld, old.computerAccess)
 
     override fun getCastingEntity(): LivingEntity? = null
 

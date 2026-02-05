@@ -26,7 +26,8 @@ dependencies {
     modCompileOnly(libs.plethora.peripherals)
 
     modCompileOnly(libs.moreiotas.common)
-    modCompileOnly(libs.complexhex)
+    compileOnly(libs.jblas)
+    compileOnly(libs.complexhex)
 
     libs.mixinExtras.common.also {
         implementation(it)

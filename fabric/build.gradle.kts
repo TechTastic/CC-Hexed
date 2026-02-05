@@ -90,9 +90,13 @@ dependencies {
 
     modRuntimeOnly(libs.moreiotas.fabric) { isTransitive = false }
     modRuntimeOnly(libs.jblas)
-    //modRuntimeOnly(libs.complexhex)
+    modRuntimeOnly(libs.complexhex)
 }
 
 tasks.named("processResources") {
+    dependsOn(":common:copyMathLibrary")
+}
+
+tasks.named("sourcesJar") {
     dependsOn(":common:copyMathLibrary")
 }

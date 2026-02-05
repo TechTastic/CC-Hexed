@@ -20,7 +20,7 @@ import kotlin.math.pow
 
 class PocketComputerCastEnv(level: ServerLevel, computerAccess: IComputerAccess, val pocketAccess: IPocketAccess) : AbstractComputerCastEnv(level, computerAccess) {
     override val mishapEnv: AbstractComputerMishapEnv<PocketComputerCastEnv>
-        get() = object : AbstractComputerMishapEnv<PocketComputerCastEnv>(level, this.castingEntity as? ServerPlayer, this) {}
+        get() = object : AbstractComputerMishapEnv<PocketComputerCastEnv>(world, this.castingEntity as? ServerPlayer, this) {}
 
     override val serverComputer: ServerComputer
         get() = run {
@@ -37,6 +37,8 @@ class PocketComputerCastEnv(level: ServerLevel, computerAccess: IComputerAccess,
                 CCAndroidsInterop.getInventory(this.pocketAccess)?.let { return it }
             (this.castingEntity as? ServerPlayer)?.inventory as Container
         }
+
+    constructor(old: PocketComputerCastEnv, newWorld: ServerLevel) : this(newWorld, old.computerAccess, old.pocketAccess)
 
     override fun getCastingEntity(): LivingEntity? = this.pocketAccess.entity as? LivingEntity
 

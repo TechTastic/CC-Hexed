@@ -37,6 +37,7 @@ object ConversionUtil {
 
     @JvmStatic
     fun Any?.toIota(level: ServerLevel): Iota {
+        println("Object to Convert: $this")
         return when (this) {
             is Number -> DoubleIota(this.toDouble())
             is Boolean -> BooleanIota(this)
@@ -49,14 +50,14 @@ object ConversionUtil {
 
     @JvmStatic
     fun HashMap<*,*>.toIota(level: ServerLevel): Iota {
-        if (this.contains(HexIotaTypes.KEY_TYPE) && this[HexIotaTypes.KEY_TYPE] is String && this.containsKey(HexIotaTypes.KEY_DATA) && this[HexIotaTypes.KEY_DATA] is Map<*,*>) {
+        if (this.contains(HexIotaTypes.KEY_TYPE) && this[HexIotaTypes.KEY_TYPE] is String && this.containsKey(HexIotaTypes.KEY_DATA) && this[HexIotaTypes.KEY_DATA] is Map<*,*>) { println("NBT to deserialize: $this")
             val tag = CompoundTag()
             tag.putString(HexIotaTypes.KEY_TYPE, this[HexIotaTypes.KEY_TYPE] as String)
             tag.put(HexIotaTypes.KEY_DATA, (this[HexIotaTypes.KEY_DATA] as Map<*,*>).toNBT())
             return IotaType.deserialize(tag, level) ?: GarbageIota()
         }
 
-        this.toList()?.let { list -> return ListIota(list.map { any -> any.toIota(level) }) }
+        this.toArrayList()?.let { list -> return ListIota(list.map { any -> any.toIota(level) }) }
 
         // TODO: Map or Json Handling
 
@@ -76,7 +77,7 @@ object ConversionUtil {
     }
 
     @JvmStatic
-    fun Map<*,*>.toList(): List<*>? {
+    fun Map<*,*>.toArrayList(): List<*>? {
         if (this.keys.all { key ->
             key is Number && ((key !is Double && key !is Float) || (key is Double && key.isFinite() && key == key.toLong().toDouble()) || (key is Double && key.isFinite() && key == key.toLong().toDouble()))
         })
@@ -105,7 +106,10 @@ object ConversionUtil {
                     nbt.putList(keyStr, value.toListTag())
                 }
                 is Map<*, *> -> {
-                    value.toList()?.let { list -> nbt.putList(keyStr, list.toListTag()) } ?:
+                    value.toArrayList()?.let { list ->
+                        nbt.putList(keyStr, list.toListTag())
+                        return@forEach
+                    } ?:
                     value.toNumericArray(Byte::class.java)?.let { bytes -> nbt.putByteArray(keyStr, bytes) } ?:
                     value.toNumericArray(Int::class.java)?.let { ints -> nbt.putIntArray(keyStr, ints) } ?:
                     value.toNumericArray(Long::class.java)?.let { longs -> nbt.putLongArray(keyStr, longs) } ?:
@@ -134,7 +138,10 @@ object ConversionUtil {
                 is Double -> nbtList.add(DoubleTag.valueOf(value))
                 is Long -> nbtList.add(LongTag.valueOf(value))
                 is Map<*, *> -> {
-                    value.toList()?.toListTag()?.let { list -> nbtList.add(list) } ?:
+                    value.toArrayList()?.toListTag()?.let { list ->
+                        nbtList.add(list)
+                        return@forEach
+                    } ?:
                     value.toNumericArray(Int::class.java)?.let { ints -> nbtList.add(IntArrayTag(ints)) } ?:
                     value.toNumericArray(Long::class.java)?.let { longs -> nbtList.add(LongArrayTag(longs)) } ?:
                     nbtList.add(value.toNBT())

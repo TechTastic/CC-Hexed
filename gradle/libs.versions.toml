@@ -5,8 +5,8 @@
 [versions]
 java = "17" # must be an integer
 
-kotlin = "1.9.22"
-kotlin-fabric = "1.10.18+kotlin.1.9.22"
+kotlin = "1.9.24"
+kotlin-fabric = "1.10.20+kotlin.1.9.24"
 kotlin-forge = "4.10.0"
 
 # Minecraft
@@ -18,7 +18,7 @@ architectury = "9.2.14"
 architectury-plugin = { require="[3.4, 3.5[" }
 architectury-loom = { require="[1.7, 1.8[" }
 
-fabric-loader = "0.14.25"
+fabric-loader = "0.15.11"
 fabric-api = "0.87.0+1.20.1"
 
 forge = "1.20.1-47.2.0"

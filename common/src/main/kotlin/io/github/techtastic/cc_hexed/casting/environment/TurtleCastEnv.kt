@@ -9,6 +9,7 @@ import dan200.computercraft.shared.computer.core.ServerComputer
 import dan200.computercraft.shared.turtle.core.InteractDirection
 import dan200.computercraft.shared.turtle.core.TurtleBrain
 import dan200.computercraft.shared.turtle.core.TurtleDropCommand
+import io.github.techtastic.cc_hexed.casting.environment.PocketComputerCastEnv
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
@@ -21,7 +22,7 @@ import kotlin.math.pow
 
 class TurtleCastEnv(level: ServerLevel, computerAccess: IComputerAccess, val turtleAccess: ITurtleAccess, val turtleSide: TurtleSide) : AbstractComputerCastEnv(level, computerAccess) {
     override val mishapEnv: AbstractComputerMishapEnv<TurtleCastEnv>
-        get() = object : AbstractComputerMishapEnv<TurtleCastEnv>(level, null, this) {
+        get() = object : AbstractComputerMishapEnv<TurtleCastEnv>(world, null, this) {
             override fun yeetHeldItemsTowards(targetPos: Vec3?) {
                 val slot = env.turtleAccess.selectedSlot
                 val item = env.turtleAccess.inventory.getItem(slot)
@@ -43,6 +44,8 @@ class TurtleCastEnv(level: ServerLevel, computerAccess: IComputerAccess, val tur
 
     override val inventory: Container
         get() = this.turtleAccess.inventory
+
+    constructor(old: TurtleCastEnv, newWorld: ServerLevel) : this(newWorld, old.computerAccess, old.turtleAccess, old.turtleSide)
 
     override fun mishapSprayPos(): Vec3 = this.turtleAccess.position.center
 
