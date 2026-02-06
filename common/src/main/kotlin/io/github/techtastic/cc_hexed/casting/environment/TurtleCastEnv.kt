@@ -45,6 +45,12 @@ class TurtleCastEnv(level: ServerLevel, computerAccess: IComputerAccess, val tur
     override val inventory: Container
         get() = this.turtleAccess.inventory
 
+    override var color: Int
+        get() = this.turtleAccess.colour
+        set(value) {
+            this.turtleAccess.colour = value
+        }
+
     constructor(old: TurtleCastEnv, newWorld: ServerLevel) : this(newWorld, old.computerAccess, old.turtleAccess, old.turtleSide)
 
     override fun mishapSprayPos(): Vec3 = this.turtleAccess.position.center
@@ -71,10 +77,13 @@ class TurtleCastEnv(level: ServerLevel, computerAccess: IComputerAccess, val tur
 
     override fun getPrimaryStacks(): List<HeldItemInfo> {
         val slot = this.turtleAccess.selectedSlot
-        return mutableListOf(HeldItemInfo(
-            this.turtleAccess.inventory.getItem(slot),
-            InteractionHand.MAIN_HAND
-        ))
+        val leftItem = this.turtleAccess.inventory.getItem(0)
+        val rightItem = this.turtleAccess.inventory.getItem(1)
+        return mutableListOf(
+            HeldItemInfo(this.turtleAccess.inventory.getItem(slot), InteractionHand.OFF_HAND),
+            HeldItemInfo(leftItem, if (leftItem.isEmpty || leftItem.item != HexItems.STAFF_MINDSPLICE) InteractionHand.OFF_HAND else InteractionHand.MAIN_HAND),
+            HeldItemInfo(rightItem, if (rightItem.isEmpty || rightItem.item != HexItems.STAFF_MINDSPLICE) InteractionHand.OFF_HAND else InteractionHand.MAIN_HAND)
+        )
     }
 
     override fun getHeldItemToOperateOn(stackOk: Predicate<ItemStack>): HeldItemInfo? {

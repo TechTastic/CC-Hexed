@@ -36,16 +36,6 @@ abstract class AbstractWandPeripheral: IPeripheral {
     }
 
     @LuaFunction
-    fun test(any: Any?): Any? {
-        return any.toIota(world).toLua(world)
-    }
-
-    @LuaFunction
-    fun map() = MapIota(scala.collection.immutable.Map.from(CollectionConverters.MapHasAsScala(mapOf(
-        IotaType.serialize(StringIota.make("hello")) to IotaType.serialize(StringIota.make("world"))
-    )).asScala().toList()), false, world).toLua(world)
-
-    @LuaFunction
     fun getStack(): MethodResult {
         return MethodResult.of(vm.image.stack.map { it.toLua(world) })
     }
@@ -79,11 +69,13 @@ abstract class AbstractWandPeripheral: IPeripheral {
     @LuaFunction
     fun popStack(): Any? {
         vm.image = vm.image.copy(stack = vm.image.stack.toMutableList())
+        if (vm.image.stack.isEmpty()) return null
         return (vm.image.stack as MutableList).removeLast().toLua(world)
     }
 
     @LuaFunction
-    fun peekStack(): Any?{
+    fun peekStack(): Any? {
+        if (vm.image.stack.isEmpty()) return null
         return vm.image.stack.last().toLua(world)
     }
 

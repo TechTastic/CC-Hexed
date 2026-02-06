@@ -5,6 +5,7 @@ import at.petrak.hexcasting.api.casting.eval.env.PlayerBasedCastEnv
 import dan200.computercraft.api.peripheral.IComputerAccess
 import dan200.computercraft.api.pocket.IPocketAccess
 import dan200.computercraft.shared.computer.core.ServerComputer
+import dan200.computercraft.shared.pocket.core.PocketBrain
 import dev.architectury.platform.Platform
 import io.github.techtastic.cc_hexed.interop.CCAndroidsInterop
 import io.github.techtastic.cc_hexed.interop.PlethoraInterop
@@ -28,7 +29,7 @@ class PocketComputerCastEnv(level: ServerLevel, computerAccess: IComputerAccess,
                 PlethoraInterop.getServerComputer(this.pocketAccess)?.let { return it }
             if (Platform.isModLoaded("cc-androids"))
                 CCAndroidsInterop.getServerComputer(this.pocketAccess)?.let { return it }
-            return this.pocketAccess as ServerComputer
+            return (this.pocketAccess as PocketBrain).computer() as ServerComputer
         }
 
     override val inventory: Container
@@ -37,6 +38,10 @@ class PocketComputerCastEnv(level: ServerLevel, computerAccess: IComputerAccess,
                 CCAndroidsInterop.getInventory(this.pocketAccess)?.let { return it }
             (this.castingEntity as? ServerPlayer)?.inventory as Container
         }
+
+    override var color: Int
+        get() = this.pocketAccess.colour
+        set(value) { this.pocketAccess.colour = value }
 
     constructor(old: PocketComputerCastEnv, newWorld: ServerLevel) : this(newWorld, old.computerAccess, old.pocketAccess)
 

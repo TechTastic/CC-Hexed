@@ -10,9 +10,12 @@ import at.petrak.hexcasting.api.casting.eval.sideeffects.OperatorSideEffect
 import at.petrak.hexcasting.api.pigment.FrozenPigment
 import at.petrak.hexcasting.api.utils.compareMediaItem
 import at.petrak.hexcasting.api.utils.otherHand
+import at.petrak.hexcasting.api.utils.putInt
 import dan200.computercraft.api.peripheral.IComputerAccess
 import dan200.computercraft.shared.computer.core.ComputerFamily
 import dan200.computercraft.shared.computer.core.ServerComputer
+import io.github.techtastic.cc_hexed.registry.CCHexedItems
+import net.minecraft.Util.NIL_UUID
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
@@ -21,12 +24,14 @@ import net.minecraft.world.InteractionHand
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.phys.Vec3
 import java.util.function.Predicate
 
 abstract class AbstractComputerCastEnv(level: ServerLevel, val computerAccess: IComputerAccess) : CastingEnvironment(level) {
     abstract val mishapEnv: AbstractComputerMishapEnv<*>
     abstract val serverComputer: ServerComputer
     abstract val inventory: Container?
+    abstract var color: Int
 
     constructor(old: AbstractComputerCastEnv, newWorld: ServerLevel) : this(newWorld, old.computerAccess)
 
@@ -120,14 +125,15 @@ abstract class AbstractComputerCastEnv(level: ServerLevel, val computerAccess: I
 
     override fun replaceItem(stackOk: Predicate<ItemStack>, replaceWith: ItemStack, hand: InteractionHand?): Boolean = false
 
-    override fun getPigment(): FrozenPigment? {
-        // TODO: RGB Pigment
-        return FrozenPigment.DEFAULT.get()
+    override fun getPigment(): FrozenPigment {
+        val stack = ItemStack(CCHexedItems.RGB_PIGMENT.value, 0)
+        stack.putInt("rgba", this.color)
+        return FrozenPigment(stack, NIL_UUID)
     }
 
-    override fun setPigment(pigment: FrozenPigment?): FrozenPigment? {
-        // TODO: RBG PIGMENT
-        return pigment
+    override fun setPigment(pigment: FrozenPigment?): FrozenPigment {
+        pigment?.let { pigment -> this.color = pigment.colorProvider.getColor(world.gameTime / 2f, mishapSprayPos()) and 0x00ffffff}
+        return this.pigment
     }
 
     override fun produceParticles(particles: ParticleSpray, colorizer: FrozenPigment) =
@@ -136,8 +142,8 @@ abstract class AbstractComputerCastEnv(level: ServerLevel, val computerAccess: I
     override fun isEnlightened(): Boolean =
         this.serverComputer.family != ComputerFamily.NORMAL
 
-    override fun isCreativeMode(): Boolean =
-        this.serverComputer.family == ComputerFamily.COMMAND || (this.castingEntity as? Player)?.isCreative == true
+    override fun isCreativeMode(): Boolean = true
+        //this.serverComputer.family == ComputerFamily.COMMAND || (this.castingEntity as? Player)?.isCreative == true
 
     // TODO: Turn this into a PostExecution extension
     override fun postExecution(result: CastResult?) {
@@ -146,12 +152,13 @@ abstract class AbstractComputerCastEnv(level: ServerLevel, val computerAccess: I
         for (sideEffect in result!!.sideEffects) {
             if (sideEffect is OperatorSideEffect.DoMishap) {
                 val msg = sideEffect.mishap.errorMessageWithName(this, sideEffect.errorCtx)
+                println("Mishap: $msg")
                 if (msg != null) {
                     this.computerAccess.queueEvent(
                         "mishap",
                         this.computerAccess.attachmentName,
                         sideEffect.mishap.javaClass.name,
-                        msg,
+                        msg.string,
                         sideEffect.errorCtx.pattern.toString()
                     )
                 }

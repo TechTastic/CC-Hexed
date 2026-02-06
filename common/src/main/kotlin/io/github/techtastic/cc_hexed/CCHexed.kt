@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import io.github.techtastic.cc_hexed.config.CCHexedServerConfig
 import io.github.techtastic.cc_hexed.registry.CCHexedActions
+import io.github.techtastic.cc_hexed.registry.CCHexedItems
 import io.github.techtastic.cc_hexed.registry.CCHexedPocketUpgrades
 import io.github.techtastic.cc_hexed.registry.CCHexedTurtleUpgrades
 
@@ -26,6 +27,7 @@ object CCHexed {
             CCHexedActions,
             CCHexedPocketUpgrades,
             CCHexedTurtleUpgrades,
+            CCHexedItems
         )
 
         ComputerCraftAPIClient.registerTurtleUpgradeModeller(WandTurtleUpgrade.SERIALISER, TurtleUpgradeModeller.flatItem())
