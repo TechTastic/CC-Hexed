@@ -9,15 +9,16 @@ import dan200.computercraft.api.lua.LuaFunction
 import dan200.computercraft.api.lua.MethodResult
 import dan200.computercraft.api.peripheral.IComputerAccess
 import dan200.computercraft.api.peripheral.IPeripheral
-import dan200.computercraft.shared.util.NBTUtil
-import dev.kineticcat.complexhex.api.casting.iota.QuaternionIota
-import dev.kineticcat.complexhex.stuff.Quaternion
 import io.github.techtastic.cc_hexed.util.ConversionUtil.toIota
 import io.github.techtastic.cc_hexed.util.ConversionUtil.toLua
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.server.level.ServerLevel
-import org.jblas.DoubleMatrix
-import ram.talia.moreiotas.api.casting.iota.MatrixIota
+import org.eu.net.pool.phlib.MapIota
+import ram.talia.moreiotas.api.casting.iota.StringIota
+import scala.Tuple
+import scala.collection.immutable.List
+import scala.jdk.CollectionConverters
+import scala.runtime.Tuples
 
 abstract class AbstractWandPeripheral: IPeripheral {
     lateinit var vm: CastingVM
@@ -35,8 +36,18 @@ abstract class AbstractWandPeripheral: IPeripheral {
     }
 
     @LuaFunction
+    fun test(any: Any?): Any? {
+        return any.toIota(world).toLua(world)
+    }
+
+    @LuaFunction
+    fun map() = MapIota(scala.collection.immutable.Map.from(CollectionConverters.MapHasAsScala(mapOf(
+        IotaType.serialize(StringIota.make("hello")) to IotaType.serialize(StringIota.make("world"))
+    )).asScala().toList()), false, world).toLua(world)
+
+    @LuaFunction
     fun getStack(): MethodResult {
-        return MethodResult.of(vm.image.stack.map { it.toLua() })
+        return MethodResult.of(vm.image.stack.map { it.toLua(world) })
     }
 
     @LuaFunction
@@ -68,12 +79,12 @@ abstract class AbstractWandPeripheral: IPeripheral {
     @LuaFunction
     fun popStack(): Any? {
         vm.image = vm.image.copy(stack = vm.image.stack.toMutableList())
-        return (vm.image.stack as MutableList).removeLast().toLua()
+        return (vm.image.stack as MutableList).removeLast().toLua(world)
     }
 
     @LuaFunction
     fun peekStack(): Any?{
-        return vm.image.stack.last().toLua()
+        return vm.image.stack.last().toLua(world)
     }
 
     @LuaFunction
@@ -83,7 +94,7 @@ abstract class AbstractWandPeripheral: IPeripheral {
     fun getRavenmind(): Any? {
         val nbt = vm.image.userData.getCompound(HexAPI.RAVENMIND_USERDATA)
         val iota = IotaType.deserialize(nbt, world)
-        return iota.toLua()
+        return iota.toLua(world)
     }
 
     @LuaFunction

@@ -91,6 +91,7 @@ dependencies {
     modRuntimeOnly(libs.moreiotas.fabric) { isTransitive = false }
     modRuntimeOnly(libs.jblas)
     modRuntimeOnly(libs.complexhex)
+    modRuntimeOnly(libs.phlib)
 }
 
 tasks.named("processResources") {

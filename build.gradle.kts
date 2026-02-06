@@ -25,6 +25,15 @@ allprojects {
                 includeGroup("maven.modrinth")
             }
         }
+
+        maven {
+            name = "pool maven"
+            url = uri("https://pool.net.eu.org/")
+            content {
+                includeGroup("org.eu.net.pool")
+                includeGroup("poollovernathan.fabric")
+            }
+        }
     }
 }
 

@@ -8,13 +8,11 @@ import at.petrak.hexcasting.api.casting.math.HexDir
 import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.common.lib.hex.HexActions
 import dan200.computercraft.api.lua.IArguments
-import dan200.computercraft.api.lua.LuaException
 import dan200.computercraft.api.lua.LuaFunction
 import dan200.computercraft.api.peripheral.IComputerAccess
 import dan200.computercraft.api.peripheral.IPeripheral
 import dan200.computercraft.api.pocket.IPocketAccess
 import io.github.techtastic.cc_hexed.casting.environment.PocketComputerCastEnv
-import io.github.techtastic.cc_hexed.casting.environment.TurtleCastEnv
 import io.github.techtastic.cc_hexed.util.ConversionUtil.toIota
 import net.minecraft.server.level.ServerLevel
 

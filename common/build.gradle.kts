@@ -28,6 +28,9 @@ dependencies {
     modCompileOnly(libs.moreiotas.common)
     compileOnly(libs.jblas)
     compileOnly(libs.complexhex)
+    modCompileOnly(libs.phlib)
+    compileOnly(libs.scala.three)
+    compileOnly(libs.scala)
 
     libs.mixinExtras.common.also {
         implementation(it)

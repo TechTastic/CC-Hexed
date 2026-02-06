@@ -13,7 +13,6 @@ import dan200.computercraft.api.peripheral.IComputerAccess
 import dan200.computercraft.api.peripheral.IPeripheral
 import dan200.computercraft.api.turtle.ITurtleAccess
 import dan200.computercraft.api.turtle.TurtleSide
-import io.github.techtastic.cc_hexed.casting.environment.PocketComputerCastEnv
 import io.github.techtastic.cc_hexed.casting.environment.TurtleCastEnv
 import io.github.techtastic.cc_hexed.util.ConversionUtil.toIota
 import net.minecraft.server.level.ServerLevel

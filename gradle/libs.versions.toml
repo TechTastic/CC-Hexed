@@ -3,11 +3,11 @@
 # https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
 
 [versions]
-java = "17" # must be an integer
+java = "21" # must be an integer
 
-kotlin = "1.9.24"
-kotlin-fabric = "1.10.20+kotlin.1.9.24"
-kotlin-forge = "4.10.0"
+kotlin = "2.2.0"
+kotlin-fabric = "1.13.4+kotlin.2.2.0"
+kotlin-forge = "4.11.0"
 
 # Minecraft
 
@@ -16,7 +16,7 @@ parchment = "2023.09.03"
 
 architectury = "9.2.14"
 architectury-plugin = { require="[3.4, 3.5[" }
-architectury-loom = { require="[1.7, 1.8[" }
+architectury-loom = { require="[1.13, 1.14[" }
 
 fabric-loader = "0.15.11"
 fabric-api = "0.87.0+1.20.1"
@@ -54,6 +54,9 @@ cc-drones-plus = "0.2.0"
 moreiotas = "0.1.1"
 jblas = "1.2.5"
 complexhex = "0.1.3-beta"
+phlib = "0.1.1+396892c"
+scala-three = "3.7.1"
+scala = "2.13.6"
 
 # other dependencies
 
@@ -138,6 +141,9 @@ moreiotas-fabric = { module="ram.talia.moreiotas:moreiotas-fabric-1.20.1", versi
 moreiotas-forge  = { module="ram.talia.moreiotas:moreiotas-forge-1.20.1", version.ref="moreiotas" }
 jblas            = { module="org.jblas:jblas", version.ref="jblas" }
 complexhex       = { module="maven.modrinth:complex-hex", version.ref="complexhex" }
+phlib            = { module="org.eu.net.pool:phlib", version.ref="phlib" }
+scala-three      = { module="org.scala-lang:scala3-library_3", version.ref="scala-three" }
+scala            = { module="org.scala-lang:scala-library", version.ref="scala" }
 
 [plugins]
 kotlin-jvm = { id="org.jetbrains.kotlin.jvm", version.ref="kotlin" }

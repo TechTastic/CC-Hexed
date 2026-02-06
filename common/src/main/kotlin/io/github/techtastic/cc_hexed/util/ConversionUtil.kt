@@ -7,6 +7,7 @@ import dan200.computercraft.api.lua.LuaException
 import dan200.computercraft.shared.util.NBTUtil
 import dev.architectury.platform.Platform
 import io.github.techtastic.cc_hexed.interop.MoreIotasInterop
+import io.github.techtastic.cc_hexed.interop.PhLibInterop
 import net.minecraft.nbt.ByteTag
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.DoubleTag
@@ -23,26 +24,27 @@ import kotlin.collections.toList
 
 object ConversionUtil {
     @JvmStatic
-    fun Iota.toLua(): Any? {
+    fun Iota.toLua(level: ServerLevel): Any? {
         if (Platform.isModLoaded("moreiotas"))
             MoreIotasInterop.toLua(this)?.let { return it }
+        if (Platform.isModLoaded("phlib"))
+            PhLibInterop.toLua(this, level)?.let { return it }
         return when(this) {
             is NullIota -> null
             is BooleanIota -> this.bool
             is DoubleIota -> this.double
-            is ListIota -> this.list.map { it.toLua() }
+            is ListIota -> this.list.map { it.toLua(level) }
             else -> NBTUtil.toLua(IotaType.serialize(this))
         }
     }
 
     @JvmStatic
     fun Any?.toIota(level: ServerLevel): Iota {
-        println("Object to Convert: $this")
         return when (this) {
             is Number -> DoubleIota(this.toDouble())
             is Boolean -> BooleanIota(this)
             is String -> if (Platform.isModLoaded("moreiotas")) MoreIotasInterop.toIota(this)!! else throw LuaException("MoreIotas is needed to handle string!")
-            is HashMap<*,*> -> this.toIota(level)
+            is HashMap<*,*> -> { this.toIota(level) }
             null -> NullIota()
             else -> GarbageIota()
         }
@@ -59,9 +61,10 @@ object ConversionUtil {
 
         this.toArrayList()?.let { list -> return ListIota(list.map { any -> any.toIota(level) }) }
 
-        // TODO: Map or Json Handling
+        if (Platform.isModLoaded("phlib"))
+            PhLibInterop.toIota(this, level)?.let { return it }
 
-        return GarbageIota()
+        throw LuaException("Non-Numeric Keyed Tables are only supported when using PhLib!")
     }
 
     @JvmStatic
